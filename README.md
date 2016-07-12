@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lifeway/play-redis.svg?branch=master)](https://travis-ci.org/lifeway/play-redis)
+
 # Redis Plugin
 
 This plugin provides support for [Redis](http://redis.io/) using the best Java driver [Jedis](https://github.com/xetorthio/jedis) and the corresponding Scala wrapper [Sedis](https://github.com/pk11/sedis). Also implements play's internal [Caching] (https://github.com/playframework/Play20/blob/master/framework/src/play/src/main/scala/play/api/cache/Cache.scala#L9) interface  
