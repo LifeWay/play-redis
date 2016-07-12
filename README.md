@@ -2,6 +2,12 @@
 
 This plugin provides support for [Redis](http://redis.io/) using the best Java driver [Jedis](https://github.com/xetorthio/jedis) and the corresponding Scala wrapper [Sedis](https://github.com/pk11/sedis). Also implements play's internal [Caching] (https://github.com/playframework/Play20/blob/master/framework/src/play/src/main/scala/play/api/cache/Cache.scala#L9) interface  
 
+### Notice
+This plugin is a fork of the redis plugin from https://github.com/playframework/play-plugins. That repository is no longer actively maintained, and the goal
+is to provide a redis plugin for play framework with more responsive updates to PR's and new play releases.
+
+For Play releases prior to 2.5.x, please refer to the original repo.
+
 # Features
 
 ###  Provides a Redis-based Cache API (supported types: String, Int, Long, Boolean and Serializable) ie.
@@ -39,35 +45,7 @@ val o = play.api.cache.Cache.getAs[String]("mykey")
     * redis.pool.blockWhenExhausted
 
 
-#### Allows direct access to Jedis and Sedis: 
-play = 2.3.x:
-```java
-//java
-import com.typesafe.plugin.RedisPlugin;
-import redis.clients.jedis.*;
-
-Jedis j = play.Play.application().plugin(RedisPlugin.class).jedisPool().getResource();
-
-try {
-  /// ... do stuff here 
-  j.set("foo", "bar");
-} finally {
-  play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
-}  
-```
-
-```scala
-//scala
-import play.api.Play.current
-import com.typesafe.plugin.use
-import com.typesafe.plugin.RedisPlugin
-
-val pool = use[RedisPlugin].sedisPool
-pool.withJedisClient { client =>
-  Option[String] single = Dress.up(client).get("single")
-}
-```
-play = 2.4.x and 2.5.x:
+#### Allows direct access to Jedis and Sedis:
 Because the underlying Sedis Pool was injected for the cache module to use, you can just inject the sedis Pool yourself, something like this:
 
 ```scala
@@ -94,51 +72,12 @@ class TryIt extends Controller {
 }
 ```
 
-The Play 2.4.x and 2.5.x module also supports compile time DI via RedisCacheComponents. Mix this in with your custom application loader just like you would if you were using EhCacheComponents from the reference cache module.
-
-
+The module also supports compile time DI via RedisCacheComponents. Mix this in with your custom application loader just like you would if you were using EhCacheComponents from the reference cache module.
 
 # How to install
 
-* add
+```"com.lifeway" %% "play-redis" % "2.5.1"``` to your dependencies
 
-play < 2.3.x:
-```"com.typesafe" %% "play-plugins-redis" % "2.0.4"``` to your dependencies
-
-play = 2.3.x:
-```"com.typesafe.play.plugins" %% "play-plugins-redis" % "2.3.1"``` to your dependencies
-
-* create a file called ```play.plugins``` in your ```conf``` directory
-
-* add ```550:com.typesafe.plugin.RedisPlugin```
-
-*  while this plugin is going to be loaded before the default cache implementation,  it's a good practice to disable the overwritten plugin:
-
- ```
- #conf/application.conf
- ehcacheplugin=disabled
- ```
-
-play = 2.4.x:
-```"com.typesafe.play.modules" %% "play-modules-redis" % "2.4.1"``` to your dependencies
-and you'll probably need to add this resolver too to resolve Sedis (see [issue](https://github.com/typesafehub/play-plugins/issues/141)):
-```resolvers += "google-sedis-fix" at "http://pk11-scratch.googlecode.com/svn/trunk"```
-* The default cache module (EhCache) will be used for all non-named cache UNLESS this module (RedisModule) is the only cache module that was loaded. If this module is the only cache module being loaded, it will work as expected on named and non-named cache. To disable the default cache module so that this Redis Module can be the default cache you must put this in your configuration:
-
- ```
- play.modules.disabled = ["play.api.cache.EhCacheModule"]
- ```
-
-* This module supports play 2.4 NamedCaches through key namespacing on a single Sedis pool. To add additional namepsaces besides the default (play), the configuration would look like such:
-
- ```
- play.cache.redis.bindCaches = ["db-cache", "user-cache", "session-cache"]
- ```
-
-play = 2.5.x:
-```"com.typesafe.play.modules" %% "play-modules-redis" % "2.5.1"``` to your dependencies
-and you'll probably need to add this resolver too to resolve Sedis (see [issue](https://github.com/typesafehub/play-plugins/issues/141)):
-```resolvers += "google-sedis-fix" at "http://pk11-scratch.googlecode.com/svn/trunk"```
 * The default cache module (EhCache) will be used for all non-named cache UNLESS this module (RedisModule) is the only cache module that was loaded. If this module is the only cache module being loaded, it will work as expected on named and non-named cache. To disable the default cache module so that this Redis Module can be the default cache you must put this in your configuration:
 
  ```
@@ -158,6 +97,7 @@ and you'll probably need to add this resolver too to resolve Sedis (see [issue](
 
 This software is licensed under the Apache 2 license, quoted below.
 
+Copyright 2016 LifeWay Christian Resources (http://www.lifeway.com).
 Copyright 2012 Typesafe (http://www.typesafe.com).
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this project except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
