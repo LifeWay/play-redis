@@ -78,7 +78,7 @@ The module also supports compile time DI via RedisCacheComponents. Mix this in w
 
 # How to install
 
-```"com.lifeway" %% "play-redis" % "2.5.1"``` to your dependencies
+```"com.lifeway" %% "play-modules-redis" % "2.5.1"``` to your dependencies
 
 * The default cache module (EhCache) will be used for all non-named cache UNLESS this module (RedisModule) is the only cache module that was loaded. If this module is the only cache module being loaded, it will work as expected on named and non-named cache. To disable the default cache module so that this Redis Module can be the default cache you must put this in your configuration:
 
@@ -99,7 +99,7 @@ The module also supports compile time DI via RedisCacheComponents. Mix this in w
 
 This software is licensed under the Apache 2 license, quoted below.
 
-Copyright 2016 LifeWay Christian Resources (http://www.lifeway.com).
+Copyright 2016 LifeWay Christian Resources (http://www.lifeway.com).  
 Copyright 2012 Typesafe (http://www.typesafe.com).
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this project except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
